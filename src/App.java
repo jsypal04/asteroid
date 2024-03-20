@@ -41,6 +41,9 @@ public class App extends Application {
         stage.setScene(scene);
         stage.setResizable(false);
 
+        // get graphics context and load images
+        GraphicsContext gContext = canvas.getGraphicsContext2D();
+
         // set event listeners
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             public void handle(KeyEvent key) {
@@ -53,16 +56,15 @@ public class App extends Application {
                     objects.add(bullet);
                 }
                 else if (key.getCode().name() == "LEFT") {
-                    player.rotate(90);
+                    System.out.println("rotate left");
+                    player.rotate(gContext);
                 }
                 else if (key.getCode().name() == "RIGHT") {
-                    player.rotate(-90);
+                    System.out.println("rotate right");
+                    player.rotate(gContext);
                 }
             }
         });
-
-        // get graphics context and load images
-        GraphicsContext gContext = canvas.getGraphicsContext2D();
         
         // game loop
         new AnimationTimer() {
