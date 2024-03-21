@@ -11,7 +11,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-
+import objects.Bullet;
 import objects.GameObject;
 import objects.Player;
 
@@ -45,8 +45,6 @@ public class App extends Application {
         // get graphics context and load images
         GraphicsContext gContext = canvas.getGraphicsContext2D();
 
-        player.draw(gContext);
-
         // set event listeners
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             public void handle(KeyEvent key) {
@@ -54,8 +52,7 @@ public class App extends Application {
                     player.accelerate();
                 }
                 else if (key.getCode().name() == "SPACE") {
-                    GameObject bullet = new GameObject(bulletImg, player.getPositionX(), player.getPositionY());
-                    bullet.setVelocity(player.getVelocityX() + 10, 0);
+                    Bullet bullet = player.spawnBullet(bulletImg);
                     objects.add(bullet);
                 }
                 else if (key.getCode().name() == "LEFT") {

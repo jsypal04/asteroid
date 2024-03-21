@@ -7,8 +7,8 @@ import javafx.scene.transform.Rotate;
 public class GameObject {
     protected double velocityX;
     protected double velocityY;
-    private double positionX;
-    private double positionY;
+    protected double positionX;
+    protected double positionY;
 
     protected double angle;
 
@@ -43,15 +43,15 @@ public class GameObject {
 
         // logic to make the objects wrap around the screen
         if (positionX > canvasWidth + width) {
-            positionX = -height;
+            positionX = -width - 10;
         }
-        else if (positionX < -height) {
+        else if (positionX < -width - 10) {
             positionX = canvasWidth + width;
         }
         if (positionY > canvasHeight + height) {
-            positionY = -height;
+            positionY = -height - 10;
         }
-        else if (positionY < -height) {
+        else if (positionY < -height - 10) {
             positionY = canvasHeight + height;
         }
     }

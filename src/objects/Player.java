@@ -16,4 +16,12 @@ public class Player extends GameObject {
         velocityX += thrust * Math.cos(Math.toRadians(angle));
         velocityY += thrust * Math.sin(Math.toRadians(angle));
     }
+
+    public Bullet spawnBullet(Image img) {
+        Bullet bullet = new Bullet(img, positionX, positionY);
+        double vx = (velocityX + 10) * Math.cos(Math.toRadians(angle));
+        double vy = (velocityY + 10) * Math.sin(Math.toRadians(angle));
+        bullet.setVelocity(vx, vy);
+        return bullet;  
+    }
 }
