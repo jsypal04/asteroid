@@ -28,8 +28,9 @@ public class App extends Application {
 
         Player player = new Player(playerImg, 400, 300);
         GameObject explo = new GameObject(exploImg, 30, 200);
-        explo.setVelocity(5, -6);
+        explo.setVelocity(0, 0);
 
+        // add objects to objects list
         objects.add(explo);
         objects.add(player);
 
@@ -41,11 +42,16 @@ public class App extends Application {
         stage.setScene(scene);
         stage.setResizable(false);
 
+        // get graphics context and load images
+        GraphicsContext gContext = canvas.getGraphicsContext2D();
+
+        player.draw(gContext);
+
         // set event listeners
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             public void handle(KeyEvent key) {
                 if (key.getCode().name() == "UP") {
-                    player.setVelocity(player.getVelocityX() + 1, player.getVelocityY());
+                    player.accelerate();
                 }
                 else if (key.getCode().name() == "SPACE") {
                     GameObject bullet = new GameObject(bulletImg, player.getPositionX(), player.getPositionY());
@@ -53,16 +59,13 @@ public class App extends Application {
                     objects.add(bullet);
                 }
                 else if (key.getCode().name() == "LEFT") {
-                    player.rotate(90);
+                    player.updateAngle(-10);
                 }
                 else if (key.getCode().name() == "RIGHT") {
-                    player.rotate(-90);
+                    player.updateAngle(10);
                 }
             }
         });
-
-        // get graphics context and load images
-        GraphicsContext gContext = canvas.getGraphicsContext2D();
         
         // game loop
         new AnimationTimer() {

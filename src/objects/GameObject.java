@@ -2,15 +2,16 @@ package objects;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.scene.transform.Rotate;
 
 public class GameObject {
-    private double velocityX;
-    private double velocityY;
+    protected double velocityX;
+    protected double velocityY;
     private double positionX;
     private double positionY;
 
-    private ImageView iconView;
+    protected double angle;
+
     private Image icon;
     private double width;
     private double height;
@@ -21,15 +22,19 @@ public class GameObject {
         icon = img;
         width = img.getWidth();
         height = img.getHeight();
-        iconView = new ImageView(icon);
+        angle = 0;
     }
 
-    public void rotate(double degrees) {
-        iconView.setRotate(90);
+    public void rotate(GraphicsContext gContext) {
+        Rotate r = new Rotate(angle, positionX, positionY);
+        gContext.setTransform(r.getMxx(), r.getMyx(), r.getMxy(), r.getMyy(), r.getTx(), r.getTy());
     }
 
     public void draw(GraphicsContext gContext) {
+        gContext.save();
+        rotate(gContext);
         gContext.drawImage(icon, positionX - width / 2, positionY - height / 2);
+        gContext.restore();
     }
 
     public void update(double canvasWidth, double canvasHeight) {
@@ -37,17 +42,17 @@ public class GameObject {
         positionY += velocityY;
 
         // logic to make the objects wrap around the screen
-        if (positionX > canvasWidth + 10) {
+        if (positionX > canvasWidth + width) {
             positionX = -height;
         }
         else if (positionX < -height) {
-            positionX = canvasWidth + 10;
+            positionX = canvasWidth + width;
         }
-        if (positionY > canvasHeight + 10) {
+        if (positionY > canvasHeight + height) {
             positionY = -height;
         }
         else if (positionY < -height) {
-            positionY = canvasHeight + 10;
+            positionY = canvasHeight + height;
         }
     }
 
@@ -78,5 +83,9 @@ public class GameObject {
 
     public double getHeight() {
         return height;
+    }
+
+    public void updateAngle(double delta) {
+        angle += delta;
     }
 }
