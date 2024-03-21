@@ -51,7 +51,7 @@ public class App extends Application {
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             public void handle(KeyEvent key) {
                 if (key.getCode().name() == "UP") {
-                    player.setVelocity(player.getVelocityX() + 1, player.getVelocityY());
+                    player.accelerate();
                 }
                 else if (key.getCode().name() == "SPACE") {
                     GameObject bullet = new GameObject(bulletImg, player.getPositionX(), player.getPositionY());
@@ -59,10 +59,10 @@ public class App extends Application {
                     objects.add(bullet);
                 }
                 else if (key.getCode().name() == "LEFT") {
-                    player.updateAngle(-5);
+                    player.updateAngle(-10);
                 }
                 else if (key.getCode().name() == "RIGHT") {
-                    player.updateAngle(5);
+                    player.updateAngle(10);
                 }
             }
         });

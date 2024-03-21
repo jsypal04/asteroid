@@ -5,12 +5,12 @@ import javafx.scene.image.Image;
 import javafx.scene.transform.Rotate;
 
 public class GameObject {
-    private double velocityX;
-    private double velocityY;
+    protected double velocityX;
+    protected double velocityY;
     private double positionX;
     private double positionY;
 
-    public double angle;
+    protected double angle;
 
     private Image icon;
     private double width;
