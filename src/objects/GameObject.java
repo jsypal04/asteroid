@@ -2,12 +2,15 @@ package objects;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.transform.Rotate;
 
 public class GameObject {
     private double velocityX;
     private double velocityY;
     private double positionX;
     private double positionY;
+
+    public double angle;
 
     private Image icon;
     private double width;
@@ -19,17 +22,19 @@ public class GameObject {
         icon = img;
         width = img.getWidth();
         height = img.getHeight();
+        angle = 0;
     }
 
     public void rotate(GraphicsContext gContext) {
-        gContext.save();
-        gContext.rotate(90);
-        draw(gContext);
-        gContext.restore();
+        Rotate r = new Rotate(angle, positionX, positionY);
+        gContext.setTransform(r.getMxx(), r.getMyx(), r.getMxy(), r.getMyy(), r.getTx(), r.getTy());
     }
 
     public void draw(GraphicsContext gContext) {
+        gContext.save();
+        rotate(gContext);
         gContext.drawImage(icon, positionX - width / 2, positionY - height / 2);
+        gContext.restore();
     }
 
     public void update(double canvasWidth, double canvasHeight) {
@@ -78,5 +83,9 @@ public class GameObject {
 
     public double getHeight() {
         return height;
+    }
+
+    public void updateAngle(double delta) {
+        angle += delta;
     }
 }

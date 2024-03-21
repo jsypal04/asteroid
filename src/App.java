@@ -28,8 +28,9 @@ public class App extends Application {
 
         Player player = new Player(playerImg, 400, 300);
         GameObject explo = new GameObject(exploImg, 30, 200);
-        explo.setVelocity(5, -6);
+        explo.setVelocity(0, 0);
 
+        // add objects to objects list
         objects.add(explo);
         objects.add(player);
 
@@ -44,6 +45,8 @@ public class App extends Application {
         // get graphics context and load images
         GraphicsContext gContext = canvas.getGraphicsContext2D();
 
+        player.draw(gContext);
+
         // set event listeners
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             public void handle(KeyEvent key) {
@@ -56,12 +59,10 @@ public class App extends Application {
                     objects.add(bullet);
                 }
                 else if (key.getCode().name() == "LEFT") {
-                    System.out.println("rotate left");
-                    player.rotate(gContext);
+                    player.updateAngle(-5);
                 }
                 else if (key.getCode().name() == "RIGHT") {
-                    System.out.println("rotate right");
-                    player.rotate(gContext);
+                    player.updateAngle(5);
                 }
             }
         });
