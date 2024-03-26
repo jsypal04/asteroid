@@ -1,4 +1,4 @@
-import java.util.LinkedList;
+import java.util.HashMap;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -17,7 +17,16 @@ import objects.Player;
 
 public class App extends Application {
 
-    static final LinkedList<GameObject> objects = new LinkedList<>();
+    static final HashMap<Long, GameObject> objects = new HashMap<Long, GameObject>();
+
+    public boolean contains(HashMap<Long, GameObject> objects, GameObject obj) {
+        for (GameObject object : objects.values()) {
+            if (object.isEqual(obj)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -31,8 +40,8 @@ public class App extends Application {
         explo.setVelocity(0, 0);
 
         // add objects to objects list
-        objects.add(explo);
-        objects.add(player);
+        objects.put(explo.id, explo);
+        objects.put(player.id, player);
 
         // setup scene nodes
         Canvas canvas = new Canvas(800, 600);
@@ -53,7 +62,7 @@ public class App extends Application {
                 }
                 else if (key.getCode().name() == "SPACE") {
                     Bullet bullet = player.spawnBullet(bulletImg);
-                    objects.add(bullet);
+                    objects.put(bullet.id, bullet);
                 }
                 else if (key.getCode().name() == "LEFT") {
                     player.updateAngle(-10);
@@ -67,15 +76,18 @@ public class App extends Application {
         // game loop
         new AnimationTimer() {
             public void handle(long currentTime) {
-                // update the explosion
-                for (GameObject obj : objects) {
-                    obj.update(canvas.getWidth(), canvas.getHeight());
-                }
+                // update the game objects
+                for (GameObject obj : objects.values()) {
+                    obj.update(canvas.getWidth(), canvas.getHeight(), System.nanoTime());
+                    if (obj.isDead()) {
+                        objects.remove(obj.id);
+                    }
+                } 
 
                 // redraw
                 gContext.setFill(Color.BLACK);
                 gContext.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-                for (GameObject obj : objects) {
+                for (GameObject obj : objects.values()) {
                     obj.draw(gContext);
                 }
             }

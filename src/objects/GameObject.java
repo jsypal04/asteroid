@@ -16,6 +16,9 @@ public class GameObject {
     private double width;
     private double height;
 
+    public long id;
+    protected boolean dead;
+
     public GameObject(Image img, double x, double y) {
         positionX = x;
         positionY = y;
@@ -23,6 +26,9 @@ public class GameObject {
         width = img.getWidth();
         height = img.getHeight();
         angle = 0;
+
+        id = System.nanoTime();
+        dead = false;
     }
 
     public void rotate(GraphicsContext gContext) {
@@ -37,7 +43,7 @@ public class GameObject {
         gContext.restore();
     }
 
-    public void update(double canvasWidth, double canvasHeight) {
+    public void update(double canvasWidth, double canvasHeight, long currentTime) {
         positionX += velocityX;
         positionY += velocityY;
 
@@ -54,6 +60,14 @@ public class GameObject {
         else if (positionY < -height - 10) {
             positionY = canvasHeight + height;
         }
+    }
+
+    public boolean isEqual(GameObject other) {
+        return id == other.id;
+    }
+
+    public boolean isDead() {
+        return dead;
     }
 
     public void setVelocity(double velX, double velY) {
