@@ -5,7 +5,7 @@ import javafx.scene.image.Image;
 public class Bullet extends GameObject {
 
     private long start;
-    private static long lifetime = 50;
+    private static long lifetime = 800000000;
     
     public Bullet(Image img, double x, double y) {
         super(img, x, y);

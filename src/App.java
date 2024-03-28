@@ -18,16 +18,17 @@ import objects.Player;
 public class App extends Application {
 
     static final HashMap<Long, GameObject> objects = new HashMap<Long, GameObject>();
+    static final HashMap<Long, GameObject> deadObjects = new HashMap<Long, GameObject>();
 
-    public boolean contains(HashMap<Long, GameObject> objects, GameObject obj) {
-        for (GameObject object : objects.values()) {
-            if (object.isEqual(obj)) {
-                return true;
-            }
+    public void pprintMap(HashMap<Long, GameObject> map) {
+        for (Long key : map.keySet()) {
+            System.out.print(key);
+            System.out.print(": ");
+            System.out.println(map.get(key));
         }
-        return false;
+        System.out.println();
     }
-
+    
     @Override
     public void start(Stage stage) throws Exception {
         // load game objects
@@ -80,9 +81,19 @@ public class App extends Application {
                 for (GameObject obj : objects.values()) {
                     obj.update(canvas.getWidth(), canvas.getHeight(), System.nanoTime());
                     if (obj.isDead()) {
-                        objects.remove(obj.id);
+                        deadObjects.put(obj.id, obj);
                     }
-                } 
+                }
+
+                // remove dead objects
+                for (GameObject obj : deadObjects.values()) {
+                    if (objects.containsKey(obj.id)) {
+                        objects.remove(obj.id, obj);
+                    }
+                }
+
+                // clear the deadObjects map
+                deadObjects.clear();
 
                 // redraw
                 gContext.setFill(Color.BLACK);
