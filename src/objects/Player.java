@@ -19,10 +19,9 @@ public class Player extends GameObject {
 
     public Bullet spawnBullet(Image img) {
         Bullet bullet = new Bullet(img, positionX, positionY);
-        double vMagnitude = Math.sqrt(Math.pow(velocityX, 2) + Math.pow(velocityY, 2));
-        double vx = (vMagnitude + 10) * Math.cos(Math.toRadians(angle));
-        double vy = (vMagnitude + 10) * Math.sin(Math.toRadians(angle));
-        bullet.setVelocity(vx, vy);
+        double bvx = bullet.getInitVelocity() * Math.cos(Math.toRadians(angle));
+        double bvy = bullet.getInitVelocity() * Math.sin(Math.toRadians(angle));
+        bullet.setVelocity(velocityX + bvx, velocityY + bvy);
         return bullet;  
     }
 }
